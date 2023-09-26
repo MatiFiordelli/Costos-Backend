@@ -1,6 +1,6 @@
-import  { MongoClient } from 'mongodb'
+import  { MongoClient, ObjectId } from 'mongodb'
 
-export default async function GetData(dbName, collectionName){
+export default async function GetData(dbName, collectionName, query_id){
      const url = "mongodb+srv://vercel-admin-user:Nqa7PD2Tiu7D2GrF@cluster0.2bgyfbp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
      let mongoClient
@@ -11,7 +11,7 @@ export default async function GetData(dbName, collectionName){
           console.log('Successfully connected')
           const db = mongoClient.db(dbName)
           const collection = db.collection(collectionName)
-          const info = collection.find({}).toArray()
+          const info = collection.find(query_id?{_id: new ObjectId(query_id)}:{}).toArray()
           return await info
      
      } catch (error) {
