@@ -14,15 +14,12 @@ export default async function GetData(dbName, collectionName, field_name, field_
           let info
 
           if(field_name==='_id'){
-               info = collection.find(
-                                   field_value
-                                        ?{[field_name]: new ObjectId(field_value)}
-                                        :{}
-               ).toArray()
+               info = collection.find({[field_name]: new ObjectId(field_value)}).toArray()
           } else {
                if(collectionName==='Recipes' && field_name==='ingrediente'){
                     info = collection.find({'receta.ingrediente': {$regex: field_value}}).toArray()
                }else{
+                    console.log('bbb')
                     info = collection.find(
                                         field_value
                                              ?{[field_name]: {$regex: field_value}}

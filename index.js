@@ -15,7 +15,7 @@ app.get('/ingredients', async (req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', false, false))
 })
 
-app.get('/ingredients/id/:_id', async(req, res)=>{
+app.get('/ingredients/_id/:_id', async(req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', '_id', `${req.params._id}`))
 })
 
@@ -36,7 +36,7 @@ app.get('/recipes', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', false, false))
 })
 
-app.get('/recipes/id/:_id', async(req, res)=>{
+app.get('/recipes/_id/:_id', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', '_id', `${req.params._id}`))
 })
 
@@ -48,7 +48,7 @@ app.get('/recipes/categoria/:categoria', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', 'categoria', `${req.params.categoria}`))
 })
 
-app.get('/recipes/receta/:ingrediente', async(req, res)=>{
+app.get('/recipes/receta/ingrediente/:ingrediente', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', 'ingrediente', `${req.params.ingrediente}`))
 })
 
