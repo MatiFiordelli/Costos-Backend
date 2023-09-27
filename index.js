@@ -12,19 +12,44 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/ingredients', async (req, res)=>{
-    res.json(await GetData(dbName, 'Ingredients', false))
+    res.json(await GetData(dbName, 'Ingredients', false, false))
 })
 
-app.get('/ingredients/:_id', async(req, res)=>{
-    res.json(await GetData(dbName, 'Ingredients', `${req.params._id}`))
+app.get('/ingredients/id/:_id', async(req, res)=>{
+    res.json(await GetData(dbName, 'Ingredients', '_id', `${req.params._id}`))
 })
+
+app.get('/ingredients/ingrediente/:ingrediente', async(req, res)=>{
+    res.json(await GetData(dbName, 'Ingredients', 'ingrediente', `${req.params.ingrediente}`))
+})
+
+app.get('/ingredients/marca/:marca', async(req, res)=>{
+    res.json(await GetData(dbName, 'Ingredients', 'marca', `${req.params.marca}`))
+})
+
+app.get('/ingredients/categoria/:categoria', async(req, res)=>{
+    res.json(await GetData(dbName, 'Ingredients', 'categoria', `${req.params.categoria}`))
+})
+
 
 app.get('/recipes', async(req, res)=>{
-    res.json(await GetData(dbName, 'Recipes', false))
+    res.json(await GetData(dbName, 'Recipes', false, false))
 })
 
-app.get('/recipes/:_id', async(req, res)=>{
-    res.json(await GetData(dbName, 'Recipes', `${req.params._id}`))
+app.get('/recipes/id/:_id', async(req, res)=>{
+    res.json(await GetData(dbName, 'Recipes', '_id', `${req.params._id}`))
+})
+
+app.get('/recipes/nombre/:nombre', async(req, res)=>{
+    res.json(await GetData(dbName, 'Recipes', 'nombre', `${req.params.nombre}`))
+})
+
+app.get('/recipes/categoria/:categoria', async(req, res)=>{
+    res.json(await GetData(dbName, 'Recipes', 'categoria', `${req.params.categoria}`))
+})
+
+app.get('/recipes/receta/:ingrediente', async(req, res)=>{
+    res.json(await GetData(dbName, 'Recipes', 'ingrediente', `${req.params.ingrediente}`))
 })
 
 app.listen(port || 3001, ()=>console.log('server online'))
