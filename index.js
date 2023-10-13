@@ -1,9 +1,15 @@
 import express from 'express'
 import cors from 'cors'
-import GetData from './mongoData.js'
+import GetData from './getData.js'
+import SetData from './setData.js'
+import DeleteData from './deleteData.js'
+import UpdateData from './updateData.js'
 
 const app = express()
 app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
 const port = process.env.port
 const dbName = 'CostosSite'
 
@@ -31,6 +37,17 @@ app.get('/ingredients/categoria/:categoria', async(req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', 'categoria', `${req.params.categoria}`))
 })
 
+app.post('/addingredient/', async(req, res)=>{
+    await SetData(dbName, 'Ingredients', req.body)
+        ?res.status(200)
+        :res.status(410)
+})
+
+app.post('/deleteingredient/', async(req, res)=>{
+    await DeleteData(dbName, 'Ingredients', req.body)
+})
+
+
 
 app.get('/recipes', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', false, false))
@@ -50,6 +67,20 @@ app.get('/recipes/categoria/:categoria', async(req, res)=>{
 
 app.get('/recipes/receta/ingrediente/:ingrediente', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', 'ingrediente', `${req.params.ingrediente}`))
+})
+
+app.post('/addrecipe/', async(req, res)=>{
+    await SetData(dbName, 'Recipes', req.body)
+        ?res.status(200)
+        :res.status(410)
+})
+
+app.post('/deleterecipe/', async(req, res)=>{
+    await DeleteData(dbName, 'Recipes', req.body)
+})
+
+app.post('/updaterecipe/', async(req, res)=>{
+    await UpdateData(dbName, 'Recipes', req.body)
 })
 
 app.listen(port || 3001, ()=>console.log('server online'))
