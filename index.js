@@ -47,6 +47,20 @@ app.post('/deleteingredient/', async(req, res)=>{
     await DeleteData(dbName, 'Ingredients', req.body)
 })
 
+app.post('/updateingredients/', async(req, res)=>{
+    await UpdateData(dbName, 'Ingredients', req.body)
+    
+    /* try{
+        await UpdateData(dbName, 'Ingredients', req.body)
+    }
+    catch{
+        res.status(410)
+    }
+    finally{
+        res.status(200)
+    } */
+})
+
 
 
 app.get('/recipes', async(req, res)=>{

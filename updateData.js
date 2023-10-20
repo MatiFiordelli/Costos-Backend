@@ -10,16 +10,27 @@ export default async function DeleteData(dbName, collectionName, document){
 		await mongoClient.connect()
 		console.log('Successfully connected')
 		const db = mongoClient.db(dbName)
+
+		const updateDoc = (fieldValue, doc) => {
+			try{
+				if(collectionName==='Ingredients') delete doc._id
+					
+				db.collection(collectionName).updateOne(
+					{ '_id': new ObjectId(fieldValue) },
+					{ '$set': doc }
+				)
+			} catch (err) {
+				console.log(err)
+			}
+		}
 		
-        const fieldValue = document['codigo']
-        
-		try{
-			db.collection(collectionName).updateOne(
-				{ '_id': new ObjectId(fieldValue) },
-				{ '$set': document }
-			)
-		} catch (err) {
-			console.log(err)
+        if(collectionName === 'Recipes') {
+			updateDoc(document['codigo'], document)
+		}
+		if(collectionName === 'Ingredients') {
+			document.forEach((e)=>{
+				updateDoc(e['_id'], e)
+			})			
 		}
 
 	} catch (error) {
