@@ -15,41 +15,47 @@ const dbName = 'CostosSite'
 
 app.get('/', (req, res)=>{
     res.send('Welcome')
+    res.status(200).send('OK')
 })
 
 app.get('/ingredients', async (req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', false, false))
+    res.status(200).send('OK')
 })
 
 app.get('/ingredients/_id/:_id', async(req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', '_id', `${req.params._id}`))
+    res.status(200).send('OK')
 })
 
 app.get('/ingredients/ingrediente/:ingrediente', async(req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', 'ingrediente', `${req.params.ingrediente}`))
+    res.status(200).send('OK')
 })
 
 app.get('/ingredients/marca/:marca', async(req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', 'marca', `${req.params.marca}`))
+    res.status(200).send('OK')
 })
 
 app.get('/ingredients/categoria/:categoria', async(req, res)=>{
     res.json(await GetData(dbName, 'Ingredients', 'categoria', `${req.params.categoria}`))
+    res.status(200).send('OK')
 })
 
 app.post('/addingredient/', async(req, res)=>{
     await SetData(dbName, 'Ingredients', req.body)
-        ?res.status(200)
-        :res.status(410)
+    res.status(200).send('OK')
 })
 
 app.post('/deleteingredient/', async(req, res)=>{
     await DeleteData(dbName, 'Ingredients', req.body)
+    res.status(200).send('OK')
 })
 
 app.post('/updateingredients/', async(req, res)=>{
     await UpdateData(dbName, 'Ingredients', req.body)
-    
+    res.status(200).send('OK')
     /* try{
         await UpdateData(dbName, 'Ingredients', req.body)
     }
@@ -65,36 +71,42 @@ app.post('/updateingredients/', async(req, res)=>{
 
 app.get('/recipes', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', false, false))
+    res.status(200).send('OK')
 })
 
 app.get('/recipes/_id/:_id', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', '_id', `${req.params._id}`))
+    res.status(200).send('OK')
 })
 
 app.get('/recipes/nombre/:nombre', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', 'nombre', `${req.params.nombre}`))
+    res.status(200).send('OK')
 })
 
 app.get('/recipes/categoria/:categoria', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', 'categoria', `${req.params.categoria}`))
+    res.status(200).send('OK')
 })
 
 app.get('/recipes/receta/ingrediente/:ingrediente', async(req, res)=>{
     res.json(await GetData(dbName, 'Recipes', 'ingrediente', `${req.params.ingrediente}`))
+    res.status(200).send('OK')
 })
 
 app.post('/addrecipe/', async(req, res)=>{
     await SetData(dbName, 'Recipes', req.body)
-        ?res.status(200)
-        :res.status(410)
+    res.status(200).send('OK')
 })
 
 app.post('/deleterecipe/', async(req, res)=>{
     await DeleteData(dbName, 'Recipes', req.body)
+    res.status(200).send('OK')
 })
 
 app.post('/updaterecipe/', async(req, res)=>{
     await UpdateData(dbName, 'Recipes', req.body)
+    res.status(200).send('OK')
 })
 
 app.listen(port || 3001, ()=>console.log('server online'))
