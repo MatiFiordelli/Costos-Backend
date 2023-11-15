@@ -94,6 +94,8 @@ app.post('/updaterecipe/', authenticateToken, async(req, res)=>{
 })
 
 app.post('/login', async(req, res)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
+
     //const salt = await bcrypt.genSalt()
     //const password = await bcrypt.hash(req.body.password, salt)
 
@@ -108,16 +110,11 @@ app.post('/login', async(req, res)=>{
             const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
             res.setHeader('Access-Control-Allow-Credentials', true)
-            //res.setHeader('Access-Control-Allow-Origin', '*')
-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
+            res.setHeader('Access-Control-Allow-Origin', '*')
+            //res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
 
             res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
             res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
-
-            if (req.method === 'OPTIONS') {
-                res.send()
-                return
-            }
 
             console.log('Sesion iniciada satisfactoriamente')
         } else{
