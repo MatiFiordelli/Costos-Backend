@@ -105,10 +105,6 @@ app.post('/login', async(req, res)=>{
     if(result){
         const auth = await bcrypt.compare(passwordReq, result.password)
         if(auth){
-            if (req.method === 'OPTIONS') {
-                res.send()
-                return
-            }
             const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
             res.setHeader('Access-Control-Allow-Credentials', true)
@@ -117,6 +113,12 @@ app.post('/login', async(req, res)=>{
 
             res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
             res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
+
+            if (req.method === 'OPTIONS') {
+                res.send()
+                return
+            }
+
             console.log('Sesion iniciada satisfactoriamente')
         } else{
             res.status(401).json({message: 'password incorrecto'})
