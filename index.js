@@ -1,8 +1,8 @@
+import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import 'dotenv/config'
 import GetData from './getData.js'
 import SetData from './setData.js'
 import DeleteData from './deleteData.js'
@@ -10,9 +10,9 @@ import UpdateData from './updateData.js'
 import { authenticateToken } from './middlewares/index.js'
 
 const app = express()
-app.use(cors( {origin: 'https://costos.vercel.app/'} ))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cors())
 
 const port = process.env.port || 3001
 const dbName = 'CostosSite'
@@ -93,6 +93,12 @@ app.post('/updaterecipe/', authenticateToken, async(req, res)=>{
     res.status(returnedData.status).json({message: returnedData.message})
 })
 
+app.options('/login', (req, res)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+    res.status(200)
+})
+
 app.post('/login', async(req, res)=>{
     //const salt = await bcrypt.genSalt()
     //const password = await bcrypt.hash(req.body.password, salt)
@@ -105,7 +111,7 @@ app.post('/login', async(req, res)=>{
     if(result){
         const auth = await bcrypt.compare(passwordReq, result.password)
         if(auth){
-            const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
+            const token = jwt.sign({email: emailReq, user: result.user}, `${secret}`, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
             console.log('Sesion iniciada satisfactoriamente')
         } else{
