@@ -105,6 +105,10 @@ app.post('/login', async(req, res)=>{
     if(result){
         const auth = await bcrypt.compare(passwordReq, result.password)
         if(auth){
+            if (req.method === 'OPTIONS') {
+                res.send()
+                return
+            }
             const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
             res.setHeader('Access-Control-Allow-Credentials', true)
