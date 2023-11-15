@@ -10,9 +10,9 @@ import UpdateData from './updateData.js'
 import { authenticateToken } from './middlewares/index.js'
 
 const app = express()
-app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(cors())
 
 const port = process.env.port || 3001
 const dbName = 'CostosSite'
@@ -97,13 +97,6 @@ app.post('/login', async(req, res)=>{
     //const salt = await bcrypt.genSalt()
     //const password = await bcrypt.hash(req.body.password, salt)
 
-    res.setHeader('Access-Control-Allow-Credentials', true)
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
-
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
-
     const emailReq = req.body.email
     const passwordReq = req.body.password
     const secret = process.env.SECRET_FOR_TOKEN
@@ -114,6 +107,12 @@ app.post('/login', async(req, res)=>{
         if(auth){
             const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
+            res.setHeader('Access-Control-Allow-Credentials', true)
+            //res.setHeader('Access-Control-Allow-Origin', '*')
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
+
+            res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+            res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
             console.log('Sesion iniciada satisfactoriamente')
         } else{
             res.status(401).json({message: 'password incorrecto'})
