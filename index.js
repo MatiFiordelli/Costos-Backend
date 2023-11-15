@@ -93,9 +93,13 @@ app.post('/updaterecipe/', authenticateToken, async(req, res)=>{
     res.status(returnedData.status).json({message: returnedData.message})
 })
 
-app.post('/login', async(req, res)=>{
+app.options('/login', (req, res)=>{
     res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+    res.send(200)
+})
 
+app.post('/login', async(req, res)=>{
     //const salt = await bcrypt.genSalt()
     //const password = await bcrypt.hash(req.body.password, salt)
 
@@ -109,13 +113,6 @@ app.post('/login', async(req, res)=>{
         if(auth){
             const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
-            res.setHeader('Access-Control-Allow-Credentials', true)
-            res.setHeader('Access-Control-Allow-Origin', '*')
-            //res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
-
-            res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-            res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
-
             console.log('Sesion iniciada satisfactoriamente')
         } else{
             res.status(401).json({message: 'password incorrecto'})
