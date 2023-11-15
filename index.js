@@ -96,7 +96,7 @@ app.post('/updaterecipe/', authenticateToken, async(req, res)=>{
 app.options('/login', (req, res)=>{
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-    res.send(200)
+    res.status(200)
 })
 
 app.post('/login', async(req, res)=>{
