@@ -10,7 +10,7 @@ import UpdateData from './updateData.js'
 import { authenticateToken } from './middlewares/index.js'
 
 const app = express()
-app.use(cors())
+app.use(cors( {origin: 'https://costos.vercel.app/'} ))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
