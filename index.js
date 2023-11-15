@@ -10,15 +10,7 @@ import UpdateData from './updateData.js'
 import { authenticateToken } from './middlewares/index.js'
 
 const app = express()
-app.use(cors(
-    {
-        allowedHeaders: ["authorization", "Content-Type"], 
-        exposedHeaders: ["authorization"], 
-        origin: "*",
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        preflightContinue: false
-      }
-))
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -104,6 +96,13 @@ app.post('/updaterecipe/', authenticateToken, async(req, res)=>{
 app.post('/login', async(req, res)=>{
     //const salt = await bcrypt.genSalt()
     //const password = await bcrypt.hash(req.body.password, salt)
+
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    // res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
 
     const emailReq = req.body.email
     const passwordReq = req.body.password
