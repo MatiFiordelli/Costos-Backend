@@ -111,7 +111,7 @@ app.post('/login', async(req, res)=>{
     if(result){
         const auth = await bcrypt.compare(passwordReq, result.password)
         if(auth){
-            const token = jwt.sign({email: emailReq, user: result.user}, secret, { expiresIn: '7d' })
+            const token = jwt.sign({email: emailReq, user: result.user}, `${secret}`, { expiresIn: '7d' })
             res.status(200).json({message: '', token: token, user: result.user})
             console.log('Sesion iniciada satisfactoriamente')
         } else{
