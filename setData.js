@@ -4,6 +4,8 @@ export default async function SetData(dbName, collectionName, document){
 	const url = 'mongodb+srv://vercel-admin-user:Nqa7PD2Tiu7D2GrF@cluster0.2bgyfbp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 	let mongoClient
+	let msg = null
+
 	try {
 		mongoClient = new MongoClient(url)
 		console.log('Connecting to MongoDB..')
@@ -11,16 +13,18 @@ export default async function SetData(dbName, collectionName, document){
 		console.log('Successfully connected')
 		const db = mongoClient.db(dbName)
 		
-		db.collection(collectionName).insertOne(document, (error, res) => {
-			if(error) {
-				console.log('Error occurred while inserting')
-			} else {
-			   	console.log('inserted record')
-			}
-			mongoClient.close()
-		})
+		try{
+			db.collection(collectionName).insertOne(document)
+			console.log('Inserted record')
+			return {status:200, message: 'OK'}
+		} catch (error) {
+			msg='Ocurrio un error al intentar agregar el documento'
+			console.log(msg)
+			return {status:500, message: msg}
+		}
 	} catch (error) {
-		console.error('Connection to MongoDB was failed!', error)
-		mongoClient.close()
+		msg='Ocurrio un error al conectarse a la base de datos'
+		console.error(msg, error)
+		return {status:500, message: msg}
 	}
 }
