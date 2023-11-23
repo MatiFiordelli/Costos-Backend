@@ -12,6 +12,9 @@ const authenticateToken = async(origin, authorization) => {
         return obj
     })
     
+    if(verifyToken==='') console.log('Verification Token failed') 
+    else console.log('Verification Token Succeed')
+    
     if(origin==='Ingredients')
         return await GetData(dbName, 'Ingredients', 'autor', verifyToken.user)
 
